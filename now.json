@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "name": "express",
+    "builds": [
+        { "src": "server.js", "use": "@now/node" }
+    ],
+    "routes": [
+        { "src": "/api/info/(.*)", "dest": "server.js" }
+    ]
+}

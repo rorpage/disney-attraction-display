@@ -1,10 +1,6 @@
 var express = require('express');
 var app = express();
-// var os = require("os");
 const fetch = require("node-fetch");
-
-// var hostname = os.hostname();
-// var port = process.env.PORT || 3000;
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -36,6 +32,4 @@ async function getWeatherInformation() {
     return await weatherRequest.json();
 }
 
-// app.listen(port);
-// console.log(hostname + ": App listening on port " + port);
 module.exports = app;

@@ -16,9 +16,16 @@ app.get("/api/info/:id", async (req, resp) => {
         getWeatherInformation()
     ]);
 
+    let attraction = {
+        id: attraction_info.id,
+        name: attraction_info.name,
+        parkId: attraction_info.parkId,
+        waitTime: attraction_info.waitTime
+    };
+
     resp.json({
-        'attraction_info': attraction_info,
-        'weather': weather
+        attraction_info: attraction,
+        weather: weather.currently
     });
 });
 

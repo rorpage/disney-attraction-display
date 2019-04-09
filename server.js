@@ -43,7 +43,7 @@ app.get("/api/info/:id", async (req, resp) => {
 
     resp.json({
         attraction_info: attraction,
-        temperature: weather.currently.temperature,
+        temperature: Math.round(weather.currently.temperature),
         time,
         date
     });

@@ -23,9 +23,27 @@ app.get("/api/info/:id", async (req, resp) => {
         waitTime: attraction_info.waitTime
     };
 
+    let clientDate = new Date();
+    let utc = clientDate.getTime() + (clientDate.getTimezoneOffset() * 60000);
+    let serverDate = new Date(utc + (3600000 * -4));
+
+    let hour = (serverDate.getHours() + 11) % 12 + 1;
+    let hour_display = (hour < 10) ? `0${hour}` : hour;
+    let minutes = serverDate.getMinutes();
+    let minutes_display = (minutes < 10) ? `0${minutes}` : minutes;
+    let time = `${hour_display}:${minutes_display}`;
+
+    let month = serverDate.getMonth() + 1;
+    let month_display = (month < 10) ? `0${month}` : month;
+    let day = serverDate.getDate();
+    let day_display = (day < 10) ? `0${day}` : day;
+    let date = `${month_display}/${day_display}`;
+
     resp.json({
         attraction_info: attraction,
-        weather: weather.currently
+        weather: weather.currently.temperature,
+        time,
+        date
     });
 });
 

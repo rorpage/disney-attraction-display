@@ -1,6 +1,6 @@
-var express = require('express');
+import express from 'express';
 var app = express();
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -32,4 +32,4 @@ async function getWeatherInformation() {
     return await weatherRequest.json();
 }
 
-module.exports = app;
+export default app;

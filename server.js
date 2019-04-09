@@ -63,12 +63,12 @@ function getAttractionWaitTime(attraction_info) {
     let wait_time = attraction_info.waitTime.toLowerCase();
 
     if (wait_time.includes("closed")) {
-        wait_time = "Closed";
+        return "Closed";
     } else if (wait_time.includes("temporary closure")) {
-        wait_time = "Temp. Closure";
+        return "Temp. Closure";
     }
 
-    return wait_time;
+    return attraction_info.waitTime;
 }
 
 function getUtcOffset(park_id) {

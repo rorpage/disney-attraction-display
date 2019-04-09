@@ -20,24 +20,24 @@ app.get("/api/info/:id", async (req, resp) => {
         id: attraction_info.id,
         name: attraction_info.name,
         parkId: attraction_info.parkId,
-        waitTime: attraction_info.waitTime
+        waitTime: getAttractionWaitTime(attraction_info)
     };
 
-    let utcOffset = getUtcOffset(attraction_info.parkId);
+    let utc_offset = getUtcOffset(attraction_info.parkId);
 
-    let clientDate = new Date();
-    let utc = clientDate.getTime() + (clientDate.getTimezoneOffset() * 60000);
-    let serverDate = new Date(utc + (3600000 * utcOffset));
+    let client_date = new Date();
+    let utc = client_date.getTime() + (client_date.getTimezoneOffset() * 60000);
+    let server_date = new Date(utc + (3600000 * utc_offset));
 
-    let hour = (serverDate.getHours() + 11) % 12 + 1;
+    let hour = (server_date.getHours() + 11) % 12 + 1;
     let hour_display = (hour < 10) ? `0${hour}` : hour;
-    let minutes = serverDate.getMinutes();
+    let minutes = server_date.getMinutes();
     let minutes_display = (minutes < 10) ? `0${minutes}` : minutes;
     let time = `${hour_display}:${minutes_display}`;
 
-    let month = serverDate.getMonth() + 1;
+    let month = server_date.getMonth() + 1;
     let month_display = (month < 10) ? `0${month}` : month;
-    let day = serverDate.getDate();
+    let day = server_date.getDate();
     let day_display = (day < 10) ? `0${day}` : day;
     let date = `${month_display}/${day_display}`;
 
@@ -59,27 +59,39 @@ async function getWeatherInformation() {
     return await weatherRequest.json();
 }
 
-function getUtcOffset(park_id) {
-    let utcOffset = -4;
+function getAttractionWaitTime(attraction_info) {
+    let wait_time = attraction_info.waitTime.toLowerCase();
 
-    // Anaheim
-    if (parkId == 330339 || parkId == 336894) {
-        utcOffset = -7;
-    // Tokyo
-    } else if (parkId == 1 || parkId == 2) {
-        utcOffset = 9;
-    // Paris
-    } else if (parkId == 3 || parkId == 4) {
-        utcOffset = 2;
-    // Hong Kong
-    } else if (parkId == 5) {
-        utcOffset = 8;
-    // Shanghai
-    } else if (parkId == 6) {
-        utcOffset = 8;
+    if (wait_time.includes("closed")) {
+        wait_time = "Closed";
+    } else if (wait_time.includes("temporary closure")) {
+        wait_time = "Temp. Closure";
     }
 
-    return utcOffset;
+    return wait_time;
+}
+
+function getUtcOffset(park_id) {
+    let utc_offset = -4;
+
+    // Anaheim
+    if (park_id === 330339 || park_id === 336894) {
+        utc_offset = -7;
+    // Tokyo
+    } else if (park_id === 1 || park_id === 2) {
+        utc_offset = 9;
+    // Paris
+    } else if (park_id === 3 || park_id === 4) {
+        utc_offset = 2;
+    // Hong Kong
+    } else if (park_id === 5) {
+        utc_offset = 8;
+    // Shanghai
+    } else if (park_id === 6) {
+        utc_offset = 8;
+    }
+
+    return utc_offset;
 }
 
 export default app;

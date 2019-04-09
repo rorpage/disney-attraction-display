@@ -23,9 +23,11 @@ app.get("/api/info/:id", async (req, resp) => {
         waitTime: attraction_info.waitTime
     };
 
+    let utcOffset = getUtcOffset(attraction_info.parkId);
+
     let clientDate = new Date();
     let utc = clientDate.getTime() + (clientDate.getTimezoneOffset() * 60000);
-    let serverDate = new Date(utc + (3600000 * -4));
+    let serverDate = new Date(utc + (3600000 * utcOffset));
 
     let hour = (serverDate.getHours() + 11) % 12 + 1;
     let hour_display = (hour < 10) ? `0${hour}` : hour;
@@ -41,7 +43,7 @@ app.get("/api/info/:id", async (req, resp) => {
 
     resp.json({
         attraction_info: attraction,
-        weather: weather.currently.temperature,
+        temperature: weather.currently.temperature,
         time,
         date
     });
@@ -55,6 +57,29 @@ async function getAttractionInformation(attraction_id) {
 async function getWeatherInformation() {
     let weatherRequest = await fetch('https://weather.wdwnt.com/api/wdw');
     return await weatherRequest.json();
+}
+
+function getUtcOffset(park_id) {
+    let utcOffset = -4;
+
+    // Anaheim
+    if (parkId == 330339 || parkId == 336894) {
+        utcOffset = -7;
+    // Tokyo
+    } else if (parkId == 1 || parkId == 2) {
+        utcOffset = 9;
+    // Paris
+    } else if (parkId == 3 || parkId == 4) {
+        utcOffset = 2;
+    // Hong Kong
+    } else if (parkId == 5) {
+        utcOffset = 8;
+    // Shanghai
+    } else if (parkId == 6) {
+        utcOffset = 8;
+    }
+
+    return utcOffset;
 }
 
 export default app;

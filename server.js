@@ -17,9 +17,9 @@ app.get("/api/info/:id", async (req, resp) => {
     ]);
 
     let attraction = {
-        id: attraction_info.id,
-        name: attraction_info.name,
-        parkId: attraction_info.parkId,
+        id: attraction_info.Id,
+        name: attraction_info.Name,
+        parkId: attraction_info.ParkId,
         waitTime: getAttractionWaitTime(attraction_info)
     };
 
@@ -50,7 +50,7 @@ app.get("/api/info/:id", async (req, resp) => {
 });
 
 async function getAttractionInformation(attraction_id) {
-    let attractionRequest = await fetch('https://wdwntnowapi.azurewebsites.net/api/v2/mobile/attraction/' + attraction_id);
+    let attractionRequest = await fetch('https://now.wdwnt.com/Attraction/get/' + attraction_id);
     return await attractionRequest.json();
 }
 
@@ -60,11 +60,11 @@ async function getWeatherInformation() {
 }
 
 function getAttractionWaitTime(attraction_info) {
-    let wait_time = attraction_info.waitTime.toLowerCase();
+    let wait_time = attraction_info.CurrentStatus;
 
-    if (wait_time.includes("closed")) {
+    if (wait_time.includes("Closed")) {
         return "Closed";
-    } else if (wait_time.includes("temporary closure")) {
+    } else if (wait_time.includes("Temporary")) {
         return "Temp. Closure";
     }
 

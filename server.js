@@ -19,7 +19,7 @@ app.get("/api/info/:id", async (req, resp) => {
     let attraction = {
         id: attraction_info.Id,
         name: attraction_info.Name,
-        parkId: attraction_info.ParkId,
+        parkId: parseInt(attraction_info.ParkId),
         waitTime: getAttractionWaitTime(attraction_info)
     };
 
@@ -68,7 +68,7 @@ function getAttractionWaitTime(attraction_info) {
         return "Temp. Closure";
     }
 
-    return attraction_info.waitTime;
+    return attraction_info.CurrentStatus;
 }
 
 function getUtcOffset(park_id) {

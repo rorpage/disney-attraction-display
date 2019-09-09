@@ -65,10 +65,10 @@ function getAttractionWaitTime(attraction_info) {
     if (wait_time.includes("Closed")) {
         return "Closed";
     } else if (wait_time.includes("Temporary")) {
-        return "Temp. Closure";
+        return "Temp. closure";
     }
 
-    return attraction_info.CurrentStatus;
+    return attraction_info.CurrentStatus.replace('Posted wait', 'Wait');
 }
 
 function getUtcOffset(park_id) {

@@ -1,16 +1,7 @@
-import express from 'express';
-
-var app = express();
 import fetch from "node-fetch";
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-app.get("/api/info/:id", async (req, resp) => {
-  var attraction_id = req.params.id || 80010191;
+async function handler(req, resp) {
+  var attraction_id = req.query.id || 80010191;
 
   const [attraction_info, weather] = await Promise.all([
     getAttractionInformation(attraction_id),
@@ -42,13 +33,15 @@ app.get("/api/info/:id", async (req, resp) => {
   let day_display = (day < 10) ? `0${day}` : day;
   let date = `${month_display}/${day_display}`;
 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   resp.json({
     attraction_info: attraction,
     temperature: Math.round(weather.currently.temperature),
     time,
     date
   });
-});
+}
 
 async function getAttractionInformation(attraction_id) {
   let attractionRequest = await fetch(`https://wdwnt-now-api.herokuapp.com/api/attractions/${attraction_id}`);
@@ -95,4 +88,4 @@ function getUtcOffset(park_id) {
   return utc_offset;
 }
 
-export default app;
+export default handler;

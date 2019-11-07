@@ -33,8 +33,8 @@ async function handler(req, resp) {
   let day_display = (day < 10) ? `0${day}` : day;
   let date = `${month_display}/${day_display}`;
 
-  resp.header("Access-Control-Allow-Origin", "*");
-  resp.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  resp.setHeader("Access-Control-Allow-Origin", "*");
+  resp.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   resp.json({
     attraction_info: attraction,
     temperature: Math.round(weather.currently.temperature),

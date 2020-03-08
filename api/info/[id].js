@@ -72,7 +72,7 @@ function getAttractionWaitTime(attraction_info) {
 }
 
 function getUtcOffset(park_id) {
-  let utc_offset = -5;
+  let utc_offset = -4;
 
   // Anaheim
   if (park_id === 330339 || park_id === 336894) {
